@@ -1,0 +1,49 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fedavg2"
+version = "1.0.0"
+description = ""
+license = "Apache-2.0"
+dependencies = [
+    "flwr[simulation]>=1.15.2",
+    "flwr-datasets[vision]>=0.5.0",
+    "torch>=1.13.0",
+    "torchvision>=0.14.0",
+    "opacus>=1.1.0",
+    "scikit-learn>=1.0.0",
+    "pandas>=1.4.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
+
+[tool.flwr.app]
+publisher = "juliazibetti"
+
+[tool.flwr.app.components]
+serverapp = "fedavg2.server_app:app"
+clientapp = "fedavg2.client_app:app"
+
+[tool.flwr.app.config]
+num-server-rounds       = 10
+local-epochs            = 5
+batch-size              = 32
+fraction-fit            = 1.0
+fraction-evaluate       = 1.0
+min-available-clients   = 2
+verbose                 = false
+
+[tool.flwr.federations]
+default = "local-simulation"
+
+[tool.flwr.federations.local-simulation]
+options.num-supernodes = 5
+
+
+
+
+
+
